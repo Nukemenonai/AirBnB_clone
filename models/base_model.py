@@ -26,7 +26,6 @@ class BaseModel():
                 else:
                     setattr(self, key, value)
 
-
     def __str__(self):
         """String representation of Object"""
         sr = "[" + self.__class__.__name__ + "]"

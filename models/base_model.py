@@ -28,7 +28,6 @@ class BaseModel():
         else:
             storage.new(self)
 
-
     def __str__(self):
         """String representation of Object"""
         sr = "[" + self.__class__.__name__ + "]"

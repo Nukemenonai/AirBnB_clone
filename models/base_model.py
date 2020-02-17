@@ -5,7 +5,7 @@ for other classes
 """
 from uuid import uuid4
 from datetime import datetime
-
+from models import storage
 
 class BaseModel():
 
@@ -16,7 +16,7 @@ class BaseModel():
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
 
-        if kwargs is not None:
+        if kwargs:
             for key, value in kwargs.items():
                 if key == '__class__':
                     continue
@@ -25,6 +25,8 @@ class BaseModel():
                     setattr(self, key, time)
                 else:
                     setattr(self, key, value)
+        else:
+            storage.new(self)
 
 
     def __str__(self):
@@ -39,6 +41,8 @@ class BaseModel():
         Save into a file the Object converted in JSON String representation
         """
         self.updated_at = datetime.now()
+        storage.save()
+
 
     def to_dict(self):
         """

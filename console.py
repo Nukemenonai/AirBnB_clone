@@ -123,8 +123,8 @@ class HBNBCommand(cmd.Cmd):
                 print(objects)
             except as e:
                 print("** class doesn't exist **")
-
-    def do_update(self, arg):
+                
+    def do_update(self, args):
         """
         updates an instance based on name and  id
         arg 1: class name | arg 2: id

@@ -3,6 +3,18 @@
 file storage module
 """
 import json
+import os
+from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+
+objs = {'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review}
 
 
 class FileStorage:
@@ -15,29 +27,25 @@ class FileStorage:
 
     def all(self):
         """ return __objects dictionary"""
-        return FileStorage.__objects
+        return self.__objects
 
     def new(self, obj):
         """ sets obj in __objects"""
-        key = obj.__class__.__name__ + '.' + obj.id
-        FileStorage.__objects[key] = obj
+        self.__objects[obj.__class__.__name__ + '.' + obj.id] = obj
 
     def save(self):
         """ serializes to JSON """
         dummy_dict = {}
-        for key, value in FileStorage.__objects.items():
+        for key, value in self.__objects.items():
             dummy_dict[key] = value.to_dict()
-        with open(FileStorage.__file_path, 'w') as f:
+        with open(self.__file_path, 'w') as f:
             json.dump(dummy_dict, f)
 
     def reload(self):
         """ deserializes JSON file to __objects"""
-        from models.base_model import BaseModel
-        try:
-            with open(FileStorage.__file_path) as f:
+        if os.path.exists(self.__file_path) is True:
+            with open(self.__file_path, 'r') as f:
                 json_objs = json.load(f)
-                for key, value in json_objs.items():
-                    inst = eval(value["__class__"] + '(**value)')
-                    FileStorage.__objects[key] = inst
-        except IOError:
-            pass
+                for key in json_objs:
+                    inst = objs[json_objs[key]['__class__']]
+                    self.__objects[key] = inst(**(json_objs[key]))

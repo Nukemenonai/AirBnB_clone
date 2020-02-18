@@ -6,6 +6,7 @@ from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from models.state import State
 
+
 class Test_Storage(unittest.TestCase):
     """ Test for file storage """
 
@@ -38,7 +39,6 @@ class Test_Storage(unittest.TestCase):
         self.assertIsNotNone(FileStorage.save.__doc__)
         self.assertIsNotNone(FileStorage.reload.__doc__)
 
-
     def test_all_method(self):
         """ Check for all method """
         new = FileStorage()
@@ -51,7 +51,6 @@ class Test_Storage(unittest.TestCase):
         output = "[BaseModel] ({}) {}".format(self.storage.id,
                                               self.storage.__dict__)
         self.assertEqual(output, str(obj_to))
-
 
     def test_change_length(self):
         """

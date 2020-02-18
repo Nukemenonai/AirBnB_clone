@@ -95,7 +95,7 @@ class HBNBCommand(cmd.Cmd):
                     key = str(sp[0]) + "." + str(sp[1])
                     if key in Objcls:
                         del(Objcls[key])
-                        model.storage.save()
+                        models.storage.save()
                     else:
                         print("** no instance found **")
             else:
@@ -121,9 +121,9 @@ class HBNBCommand(cmd.Cmd):
                     if _dict['__class__'] == sp[0]:
                         objects.append(str(Objcls[obj]))
                 print(objects)
-            except as e:
+            except:
                 print("** class doesn't exist **")
-                
+
     def do_update(self, args):
         """
         updates an instance based on name and  id
@@ -135,7 +135,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             try:
                 eval(str(sp[0]))
-            except as e:
+            except:
                 print("** class doesn't exist **")
                 return
             if len(sp) == 1:

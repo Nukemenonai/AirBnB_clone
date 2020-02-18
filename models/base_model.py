@@ -5,18 +5,15 @@ for other classes
 """
 from uuid import uuid4
 from datetime import datetime
-from models import storage
+import models
+
 
 class BaseModel():
 
     def __init__(self, *args, **kwargs):
         """Constructor for a Class"""
 
-        self.id = str(uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
-
-        if kwargs:
+        if kwargs is not None and len(kwargs) != 0:
             for key, value in kwargs.items():
                 if key == '__class__':
                     continue
@@ -26,7 +23,10 @@ class BaseModel():
                 else:
                     setattr(self, key, value)
         else:
-            storage.new(self)
+            self.id = str(uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = self.created_at
+            models.storage.new(self)
 
     def __str__(self):
         """String representation of Object"""
@@ -39,18 +39,21 @@ class BaseModel():
         """
         Save into a file the Object converted in JSON String representation
         """
-        self.updated_at = datetime.now()
-        storage.save()
-
+        new = datetime.now()
+        setattr(self, 'updated_at', new)
+        models.storage.save()
 
     def to_dict(self):
         """
         Returns a dictionary of an instance with a new key called '__class__'
         and specific format for datetime keys
         """
-        key = "__class__"
-        value = self.__class__.__name__
-        self.__dict__[key] = value
-        self.__dict__["created_at"] = self.__dict__["created_at"].isoformat()
-        self.__dict__["updated_at"] = self.__dict__["updated_at"].isoformat()
-        return (self.__dict__)
+        new = {}
+        _dict = self.__dict__
+        for key in _dict:
+            if key == 'created_at' or key == 'updated_at':
+                new[key] = _dict[key].isoformat()
+            else:
+                new[key] = _dict[key]
+        new['__class__'] = self.__class__.__name__
+        return (new)

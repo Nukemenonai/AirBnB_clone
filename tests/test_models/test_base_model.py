@@ -9,110 +9,81 @@ from datetime import datetime
 class Test_Model(unittest.TestCase):
     """ Test for ModelBase """
 
+    @classmethod
+    def setUpClass(cls):
+        """ Set up an instance for tests """
+        cls.Base1 = BaseModel()
+        cls.Base1.name = "Student"
+        cls.Base1.my_number = 45
+        cls.Base2 = BaseModel()
+        cls.Base2.name = "Teacher"
+        cls.Base2.my_number = 54
+
+    @classmethod
+    def teardown(cls):
+        """ Delete the instance at the end of tests"""
+        del cls.Base1
+        del cls.Base2
+        try:
+            os.remove("file.json")
+        except:
+            pass
+
+    def test_docstring(self):
+        """ Test if all methods have docstring """
+        self.assertIsNotNone(BaseModel.__init__.__doc__)
+        self.assertIsNotNone(BaseModel.__doc__)
+        self.assertIsNotNone(BaseModel.save.__doc__)
+        self.assertIsNotNone(BaseModel.to_dict.__doc__)
+        self.assertIsNotNone(BaseModel.__str__.__doc__)
+
     def test_instance(self):
-        Base1 = BaseModel()
-        Base2 = BaseModel()
-        self.assertTrue(Base1.id != Base2.id)
+        """ Test if objs are instance of BaseModel and check if data is ok """
+        self.assertTrue(isinstance(self.Base1, BaseModel))
+        self.assertEqual(self.Base1.name, "Student")
+        self.assertEqual(self.Base1.my_number, 45)
+        self.assertTrue(isinstance(self.Base2, BaseModel))
+        self.assertEqual(self.Base2.name, "Teacher")
+        self.assertEqual(self.Base2.my_number, 54)
 
-    def test_change_id(self):
-        Base1 = BaseModel()
-        Base1.id = "Hola"
-        self.assertEqual(Base1.id, "Hola")
-
-    def test_change_crtm(self):
-        Base1 = BaseModel()
-        Base1.created_at = "2020-10-20"
-        self.assertEqual(Base1.created_at, "2020-10-20")
-
-    def test_change_uptm(self):
-        Base1 = BaseModel()
-        Base1.updated_at = "2020-11-20"
-        self.assertEqual(Base1.updated_at, "2020-11-20")
-
-    def test_change_id(self):
-        Base1 = BaseModel()
-        Base1.id = "Hola"
-        self.assertEqual(Base1.id, "Hola")
-
-    def test_isinstance(self):
-        Base1 = BaseModel()
-        self.assertIsInstance(Base1, BaseModel)
-
-    def test_instance_arg(self):
-        with self.assertRaises(TypeError):
-            Base1 = BaseModel(12)
-
-    def test_create(self):
-        Base1 = BaseModel()
-        self.assertTrue(Base1 is not None)
-
-    def test_create_time(self):
-        Base1 = BaseModel()
-        self.assertTrue(Base1.created_at is not None)
-
-    def test_update_time(self):
-        Base1 = BaseModel()
-        self.assertTrue(Base1.updated_at is not None)
-
-    def test_take_create_time(self):
-        Base1 = BaseModel()
-        self.assertIsInstance(Base1.created_at, datetime)
-
-    def test_take_update_time(self):
-        Base1 = BaseModel()
-        self.assertIsInstance(Base1.updated_at, datetime)
-
-    def test_updated_time(self):
-        Base1 = BaseModel()
-        PrevTime = Base1.updated_at
-        Base1.save()
-        self.assertTrue(Base1.updated_at != PrevTime)
-
-    def test_instanceofstr(self):
-        Base1 = BaseModel()
-        str1 = Base1.__str__()
-        self.assertIsInstance(str1, str)
+    def test_uniq_id(self):
+        """ Check that each instance of a class have different ids"""
+        self.assertNotEqual(self.Base1.id, self.Base2.id)
 
     def test_str(self):
-        Base1 = BaseModel()
-        sr = "[" + Base1.__class__.__name__ + "]"
-        sr += " (" + str(Base1.id) + ") "
-        sr += str(Base1.__dict__)
-        self.assertEqual(Base1.__str__(), sr)
+        """ Check if output is OK """
+        string = "[BaseModel] ({}) {}".format(self.Base1.id,
+                                              self.Base1.__dict__)
+        self.assertEqual(string, str(self.Base1))
 
-    def test_instanceofdict(self):
-        Base1 = BaseModel()
-        dict1 = Base1.to_dict()
-        self.assertIsInstance(dict1, dict)
+    def test_save(self):
+        """ Test if changes was saved """
+        self.Base2.save()
+        self.assertNotEqual(self.Base2.created_at, self.Base2.updated_at)
 
-    def test_isoformatchange(self):
-        Base1 = BaseModel()
-        with self.assertRaises(AttributeError):
-            Base1.created_at = "2020-10-20"
-            Base1.to_dict()
+    def test_obj_to_dict(self):
+        """ Test if obj was converted to dict """
+        _dict = self.Base1.to_dict()
+        time_format = "%Y-%m-%dT%H:%M:%S.%f"
+        self.assertEqual(type(_dict), dict)
+        self.assertEqual(type(_dict['created_at']), str)
+        self.assertEqual(type(_dict['updated_at']), str)
+        self.assertEqual(_dict['updated_at'],
+                         self.Base1.updated_at.strftime(time_format))
+        self.assertEqual(_dict['created_at'],
+                         self.Base1.created_at.strftime(time_format))
 
-    def test_str_isoformat_change(self):
-        Base1 = BaseModel()
-        Base1.created_at = "2020-10-20"
-        self.assertTrue(Base1.__str__() is not None)
-
-    def test_stringid(self):
-        Base1 = BaseModel()
-        self.assertIsInstance(Base1.id, str)
-
-    def test_stringid(self):
-        Base1 = BaseModel()
-        self.assertIsInstance(Base1.id, str)
-
-    def test_string_created_time(self):
-        Base1 = BaseModel()
-        Base1.to_dict()
-        self.assertIsInstance(Base1.created_at, str)
-
-    def test_string_updated_time(self):
-        Base1 = BaseModel()
-        Base1.to_dict()
-        self.assertIsInstance(Base1.updated_at, str)
+    def test_dict_to_BaseObj(self):
+        """ Test if a dictionary could be converted to Obj of BaseModel """
+        base_json = self.Base1.to_dict()
+        obj = BaseModel(**base_json)
+        self.assertTrue(isinstance(obj, BaseModel))
+        self.assertEqual(obj.name, self.Base1.name)
+        self.assertEqual(obj.my_number, self.Base1.my_number)
+        self.assertEqual(obj.id, self.Base1.id)
+        self.assertEqual(obj.created_at, self.Base1.created_at)
+        self.assertEqual(obj.updated_at, self.Base1.updated_at)
+        self.assertNotEqual(obj, self.Base1)
 
 
 if __name__ == '__main__':

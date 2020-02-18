@@ -9,7 +9,8 @@ import models
 
 
 class BaseModel():
-
+    """ Class BaseModel that defines the attributes and methods
+    for other classes """
     def __init__(self, *args, **kwargs):
         """Constructor for a Class"""
 

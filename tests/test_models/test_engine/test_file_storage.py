@@ -1,7 +1,9 @@
+#!/usr/bin/python3
 """Test file for BaseModel Class"""
 
 import unittest
 import json
+import os
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from models.state import State
@@ -77,9 +79,9 @@ class Test_Storage(unittest.TestCase):
         key = state.__class__.__name__ + "." + state.id
         self.assertIsNotNone(_dict_objs[key])
         obj_to = _dict_objs[key]
-        string = "[State] ({}) {}".format(state.id,
+        output = "[State] ({}) {}".format(state.id,
                                           state.__dict__)
-        self.assertEqual(string, str(obj_to))
+        self.assertEqual(output, str(obj_to))
 
     def test_save_method(self):
         """ Test for save method """

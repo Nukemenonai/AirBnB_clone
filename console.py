@@ -178,6 +178,16 @@ class HBNBCommand(cmd.Cmd):
             self.do_all(sp[0])
         elif sp[0] in objs and sp[1] == "count()":
             self.do_count(sp[0])
+        elif sp[0] in objs and sp[1].startswith('show'):
+            sp2 = sp[1].split('"')
+            if len(sp2) == 3:
+                arg = sp[0] + " " + sp2[1]
+                self.do_show(arg)
+        elif sp[0] in objs and sp[1].startswith('destroy'):
+            sp2 = sp[1].split('"')
+            if len(sp2) == 3:
+                arg = sp[0] + " " + sp2[1]
+                self.do_destroy(arg)
         else:
             print("*** Unknown syntax: {}".format(args))
 

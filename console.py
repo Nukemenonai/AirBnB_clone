@@ -155,6 +155,18 @@ class HBNBCommand(cmd.Cmd):
                             setattr(Objcls[attr], sp[2], sp[3])
                             models.storage.save()
 
+    def do_count(self, args):
+        """Count the number of instances of a class"""
+        nb_objects = 0
+        objects = models.storage.all()
+        new = {}
+        for obj in objects:
+            new[obj] = objects[obj].to_dict()
+        for n_obj in new:
+            if (args == new[n_obj]['__class__']):
+                nb_objects = nb_objects + 1
+        print(nb_objects)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

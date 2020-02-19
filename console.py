@@ -12,6 +12,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
+from models.engine.file_storage import FileStorage
 import models
 import json
 
@@ -167,6 +168,18 @@ class HBNBCommand(cmd.Cmd):
                 nb_objects = nb_objects + 1
         print(nb_objects)
 
+    def default(self, args):
+        """
+        creates a new instance of basemodel
+        args: Class name + .all()
+        """
+        sp = args.split(".")
+        if sp[0] in objs and sp[1] == "all()":
+            self.do_all(sp[0])
+        elif sp[0] in objs and sp[1] == "count()":
+            self.do_count(sp[0])
+        else:
+            print("*** Unknown syntax: {}".format(args))
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

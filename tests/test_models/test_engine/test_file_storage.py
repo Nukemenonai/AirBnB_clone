@@ -95,6 +95,12 @@ class Test_Storage(unittest.TestCase):
         for key in new:
             self.assertEqual(_dict[key], new[key])
 
+    def test_save(self):
+        """ Test if changes was saved """
+        Base = BaseModel()
+        Base.save()
+        self.assertNotEqual(Base.created_at, Base.updated_at)
+
 
 if __name__ == '__main__':
     unittest.main()

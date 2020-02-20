@@ -61,6 +61,13 @@ The console contains prebuilt commands that which can be listed using the comand
 
 To quit the console, type the commands quit or EOF.
 
+   Commands can be used
+
+   create [args] - used to create Objects
+   show [args] - to display an object created
+   destroy [args] - to destroy objects created previously
+   update [args] - to update an object was created previously
+
 #### Examples
 
 	```

@@ -74,5 +74,5 @@ To quit the console, type the commands quit or EOF.
 	```
 
 # Authors
-Miguel Parada <miguel.parada@holbertonschool.com>
+Miguel Parada <michael_v613@hotmail.com>
 David Ovalle <david.ovalle@holbertonschool.com>

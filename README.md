@@ -61,12 +61,20 @@ The console contains prebuilt commands that which can be listed using the comand
 
 To quit the console, type the commands quit or EOF.
 
-   Commands can be used
+### Commands can be used
 
-   create [args] - used to create Objects
-   show [args] - to display an object created
-   destroy [args] - to destroy objects created previously
-   update [args] - to update an object was created previously
+    create [args] - used to create Objects
+    show [args] - to display an object created
+    destroy [args] - to destroy objects created previously
+    update [args] - to update an object was created previously
+    all [args] - to display all objects were created previously by an specific Class
+    count [args] - to know the number of instances were created from a Class
+
+### Also you can use it by this way
+
+    	 (hbnb) BaseModel.all()
+	 (hbnb) BaseModel.show()
+	 (hbnb) BaseModel.count()
 
 #### Examples
 

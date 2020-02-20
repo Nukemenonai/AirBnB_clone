@@ -15,6 +15,7 @@ from models.review import Review
 from models.engine.file_storage import FileStorage
 import models
 import json
+import re
 
 
 objs = {'BaseModel': BaseModel, 'User': User, 'State': State, 'City': City,
@@ -188,6 +189,14 @@ class HBNBCommand(cmd.Cmd):
             if len(sp2) == 3:
                 arg = sp[0] + " " + sp2[1]
                 self.do_destroy(arg)
+        elif sp[0] in objs and sp[1].startswith('update'):
+            start = 'update('
+            end = ')'
+            sp2 = re.findall(re.escape(start)+"(.*)"+re.escape(end), sp[1])[0]
+            sp2 = sp2.replace('(', '').replace(')', '').replace(',', '')
+            sp2 = sp2.replace('"', '')
+            arg = sp[0] + " " + sp2
+            self.do_update(arg)
         else:
             print("*** Unknown syntax: {}".format(args))
 

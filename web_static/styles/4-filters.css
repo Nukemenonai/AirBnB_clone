@@ -1,0 +1,26 @@
+.filters {
+    background-color: white;
+    height: 70px;
+    width: 100%;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+}
+
+.search {
+    top: 50%;
+    font-size: 18px;
+    background-color: #FF5A5F;
+    color: #FFFFFF;
+    height: 48px;
+    vertical-align: middle;
+    width: 20%;
+    border: unset;
+    border-radius: 4px;
+    float: right;
+    margin-right: 30px;
+    margin-top: 11px;
+}
+
+.search:hover {
+    opacity: 90%;
+}

@@ -9,7 +9,7 @@ header {
     width: 142px;
     height: 60px;
     margin-left: 20px;
+    vertical-align: middle;
     background-image: url('../images/logo.png');
-    vertical-align: center;
     align-self: left;
 }

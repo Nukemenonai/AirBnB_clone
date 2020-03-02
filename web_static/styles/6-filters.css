@@ -64,6 +64,7 @@
     border: 1px solid #DDDDDD;
     border-radius: 4px;
     margin-top: 0;
+    z-index: 1;
 }
 
 .popover ul li {

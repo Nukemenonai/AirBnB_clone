@@ -60,13 +60,30 @@
 
 .popover {
     visibility: hidden;
+    background-color: #FFF;
     border: 1px solid #DDDDDD;
     border-radius: 4px;
     margin-top: 0;
 }
 
+.popover ul li {
+    list-style-type: none;
+}
+
+.popover ul {
+    list-style-type: none;
+}
+
+.popover li {
+    list-style-type: none;
+}
+
 .amenities:hover .popover{
     visibility: visible;
+    background-color: #FFF;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    margin-top: 0;
 }
 
 .locations:hover .popover{

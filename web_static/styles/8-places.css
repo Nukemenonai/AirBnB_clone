@@ -34,6 +34,7 @@ article h2 {
     min-width: 60px;
     height: 60px;
     font-size: 30px;
+    line-height: 60px;
 }
 
 .max_guest {

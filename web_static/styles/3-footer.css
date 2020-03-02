@@ -1,4 +1,5 @@
 footer {
+    position: relative; 
     background-color: #FFF;
     height: 60px;
     width: 100%;
